@@ -10,7 +10,9 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.7.2",
     "@hookform/resolvers": "^3.9.0",
+    "@prisma/client": "^5.21.1",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
