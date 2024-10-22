@@ -26,6 +26,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    authorized: async ({ auth, request }) => {
+      const isLoggedIn = !!auth?.user;
+      const isOnDashboard = request.nextUrl.pathname.startsWith('/dashboard');
+      return isLoggedIn || !isOnDashboard;
+    },
+  },
   session: {
     strategy: 'jwt',
   },
