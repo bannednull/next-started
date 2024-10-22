@@ -12,6 +12,8 @@
   "dependencies": {
     "next": "15.0.0",
     "next-auth": "^5.0.0-beta.25",
+    "next-safe-action": "^7.9.6",
+    "pino": "^9.5.0",
     "react": "19.0.0-rc-65a56d0e-20241020",
     "react-dom": "19.0.0-rc-65a56d0e-20241020",
     "zod": "^3.23.8"
