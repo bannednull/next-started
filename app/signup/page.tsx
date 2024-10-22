@@ -1,6 +1,6 @@
 'use client';
 
-import { login } from '@/actions/auth/action-auth';
+import { register } from '@/actions/auth/action-auth';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -11,28 +11,27 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { signinSchema } from '@/types/validate';
+import { signupSchema } from '@/types/validate';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { redirect } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-function SignIn() {
-  const form = useForm<z.infer<typeof signinSchema>>({
-    resolver: zodResolver(signinSchema),
+function SignUp() {
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       username: '',
       password: '',
+      repeatPassword: '',
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof signinSchema>) => {
-    const res = await login(data);
+  const onSubmit = async (data: z.infer<typeof signupSchema>) => {
+    const res = await register(data);
     if ('error' in res) {
       form.setError('root', { message: res.error });
       return;
     }
-    redirect('/dashboard');
   };
 
   return (
@@ -67,11 +66,25 @@ function SignIn() {
               )}
             />
 
+            <FormField
+              control={form.control}
+              name="repeatPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Repeat Password</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="password" placeholder="****" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             {form.formState.errors.root && (
               <p className="text-red-500">{form.formState.errors.root.message}</p>
             )}
 
-            <Button type="submit">Sign in</Button>
+            <Button type="submit">Sign Up</Button>
           </form>
         </Form>
       </section>
@@ -79,4 +92,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignUp;
