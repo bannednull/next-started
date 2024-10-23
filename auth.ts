@@ -1,6 +1,8 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
+import { compare } from 'bcryptjs';
+import { prisma } from './libs/prisma';
 
 const credentialsSchema = z.object({
   username: z.string().min(1, 'Username is required'),
@@ -15,14 +17,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        try {
-          const { username, password } = credentialsSchema.parse(credentials);
-          console.log(username, password);
-          return { id: username, name: username };
-        } catch (error) {
-          console.log(error);
-          return null;
-        }
+        const { username, password } = credentialsSchema.parse(credentials);
+        const user = await prisma.user.findUnique({ where: { email: username } });
+        if (!user) throw new Error('User not found');
+        const isPasswordCorrect = await compare(password, user.password || '');
+        if (!isPasswordCorrect) throw new Error('Incorrect password');
+        return { id: String(user.id), name: user.name, email: user.email };
       },
     }),
   ],
