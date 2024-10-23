@@ -1,3 +1,5 @@
+'use server';
+
 import { actionClient } from '@/actions/safe-action';
 import { signinSchema } from './schema';
 import { signIn } from '@/auth';

@@ -1,3 +1,5 @@
+'use server';
+
 import { actionClient } from '@/actions/safe-action';
 import { forgotPasswordSchema } from './schema';
 import { prisma } from '@/libs/prisma';

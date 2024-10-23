@@ -1,3 +1,5 @@
+'use server';
+
 import { actionClient } from '@/actions/safe-action';
 import { signupSchema } from './schema';
 import { hash } from 'bcryptjs';
