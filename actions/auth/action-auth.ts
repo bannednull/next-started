@@ -2,23 +2,25 @@
 
 import { signIn } from '@/auth';
 import { forgotPasswordSchema, signinSchema, signupSchema } from '@/types/validate';
-import { z } from 'zod';
 import { hash } from 'bcryptjs';
 import { prisma } from '@/libs/prisma';
 import { actionClient } from '../safe-action';
 import { Prisma } from '@prisma/client';
 
-export async function login(data: z.infer<typeof signinSchema>) {
-  try {
-    await signIn('credentials', {
-      redirect: false,
-      ...data,
-    });
-    return { success: true };
-  } catch {
-    return { error: 'Invalid credentials' };
-  }
-}
+export const login = actionClient
+  .metadata({ name: 'login' })
+  .schema(signinSchema)
+  .action(async ({ parsedInput: { username, password } }) => {
+    try {
+      await signIn('credentials', {
+        redirect: false,
+        ...{ username, password },
+      });
+      return { success: true };
+    } catch {
+      return { error: 'Invalid credentials' };
+    }
+  });
 
 export const register = actionClient
   .metadata({ name: 'register' })

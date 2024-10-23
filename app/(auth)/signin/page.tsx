@@ -13,8 +13,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { signinSchema } from '@/types/validate';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAction } from "next-safe-action/hooks";
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -27,14 +28,19 @@ function SignIn() {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof signinSchema>) => {
-    const res = await login(data);
-    if ('error' in res) {
-      form.setError('root', { message: res.error });
-      return;
-    }
-    redirect('/dashboard');
-  };
+  const router = useRouter();
+
+  const { execute } = useAction(login, {
+    onSuccess({ data }) {
+      if (data && 'error' in data) {
+        form.setError('root', { message: data.error });
+        return;
+      }
+      router.push('/dashboard');
+    },
+  });
+
+  const onSubmit = async (data: z.infer<typeof signinSchema>) => execute(data);
 
   return (
     <Form {...form}>
