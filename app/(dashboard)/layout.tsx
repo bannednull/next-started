@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Home } from 'lucide-react';
+import { Home, User } from 'lucide-react';
 import Profile from '@/components/profile';
 
 const routes = [
@@ -7,6 +7,11 @@ const routes = [
     title: 'Dashboard',
     path: '/dashboard',
     Icon: <Home className="size-5" />,
+  },
+  {
+    title: 'Profile',
+    path: '/dashboard/profile',
+    Icon: <User className="size-5" />,
   },
 ];
 
