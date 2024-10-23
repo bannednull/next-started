@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Home } from 'lucide-react';
+import Profile from '@/components/profile';
 
 const routes = [
   {
@@ -15,13 +16,15 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
       <aside className="flex flex-col border-r bg-muted/30 p-5">
         <ul className="flex flex-col gap-1">
           {routes.map(({ title, path, Icon }, index) => (
-            <li key={index} className="hover:bg-muted rounded-lg">
+            <li key={index} className="rounded-lg hover:bg-muted">
               <Link className="flex items-center gap-2 p-2" href={path}>
                 {Icon} {title}
               </Link>
             </li>
           ))}
         </ul>
+
+        <Profile />
       </aside>
 
       <section className="overflow-hidden">{children}</section>
