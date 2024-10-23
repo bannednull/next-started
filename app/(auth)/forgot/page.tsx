@@ -1,61 +1,12 @@
-'use client';
+import FormForgot from '@/components/form/form-forgot';
 
-import { forgotPassword } from '@/actions/auth/action-auth';
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { forgotPasswordSchema } from '@/types/validate';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-
-function Forgot() {
-  const form = useForm<z.infer<typeof forgotPasswordSchema>>({
-    resolver: zodResolver(forgotPasswordSchema),
-    defaultValues: {
-      email: '',
-    },
-  });
-
-  const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
-    const res = await forgotPassword(data);
-    console.log(res);
-  };
-
+function ForgotPage() {
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input {...field} type="email" placeholder="Email" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {form.formState.errors.root && (
-          <p className="text-red-500">{form.formState.errors.root.message}</p>
-        )}
-
-        <Button className="w-full" size="sm" type="submit">
-          Send reset instructions
-        </Button>
-      </form>
-    </Form>
+    <>
+      <h1 className="text-xl font-bold">Forgot your password</h1>
+      <FormForgot />
+    </>
   );
 }
 
-export default Forgot;
+export default ForgotPage;
