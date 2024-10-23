@@ -72,6 +72,10 @@ function SignIn() {
               <p className="text-red-500">{form.formState.errors.root.message}</p>
             )}
 
+            <Link className="text-sm text-blue-500 hover:text-blue-700" href="/forgot">
+              Forgot your password?
+            </Link>
+
             <Button className="w-full" size="sm" type="submit">
               Sign in
             </Button>

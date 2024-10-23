@@ -15,3 +15,7 @@ export const signupSchema = z
     message: 'Passwords do not match',
     path: ['repeatPassword'],
   });
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email().min(1, 'Email is required'),
+});

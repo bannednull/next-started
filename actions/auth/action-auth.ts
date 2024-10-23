@@ -1,10 +1,11 @@
 'use server';
 
 import { signIn } from '@/auth';
-import { signinSchema, signupSchema } from '@/types/validate';
+import { forgotPasswordSchema, signinSchema, signupSchema } from '@/types/validate';
 import { z } from 'zod';
 import { hash } from 'bcryptjs';
 import { prisma } from '@/libs/prisma';
+import { actionClient } from '../safe-action';
 
 export async function login(data: z.infer<typeof signinSchema>) {
   try {
@@ -32,3 +33,14 @@ export async function register(data: z.infer<typeof signupSchema>) {
     return { error: 'Registration failed' };
   }
 }
+
+export const forgotPassword = actionClient
+  .metadata({ name: 'forgot_password' })
+  .schema(forgotPasswordSchema)
+  .action(async ({ parsedInput: { email } }) => {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) throw new Error('User not found');
+
+    //TODO: send email
+    return user;
+  });
