@@ -1,6 +1,7 @@
 'use client';
 
-import { login } from '@/actions/auth/action-auth';
+import { loginAction } from '@/actions/user/login/login-post-action';
+import { signinSchema } from '@/actions/user/login/schema';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -11,7 +12,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { signinSchema } from '@/types/validate';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAction } from 'next-safe-action/hooks';
 import Link from 'next/link';
@@ -30,7 +30,7 @@ function FormSignIn() {
 
   const router = useRouter();
 
-  const { execute } = useAction(login, {
+  const { execute } = useAction(loginAction, {
     onSuccess({ data }) {
       if (data && 'error' in data) {
         form.setError('root', { message: data.error });

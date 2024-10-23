@@ -1,6 +1,7 @@
 'use client';
 
-import { forgotPassword } from '@/actions/auth/action-auth';
+import { forgotAction } from '@/actions/user/forgot/forgot-post-action';
+import { forgotPasswordSchema } from '@/actions/user/forgot/schema';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -11,7 +12,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { forgotPasswordSchema } from '@/types/validate';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -25,7 +25,7 @@ function FormForgot() {
   });
 
   const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
-    const res = await forgotPassword(data);
+    const res = await forgotAction(data);
     console.log(res);
   };
 

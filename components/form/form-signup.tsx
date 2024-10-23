@@ -1,6 +1,5 @@
 'use client';
 
-import { register } from '@/actions/auth/action-auth';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -11,12 +10,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { signupSchema } from '@/types/validate';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useAction } from 'next-safe-action/hooks';
+import { registerAction } from '@/actions/user/register/register-post-action';
+import { signupSchema } from '@/actions/user/register/schema';
 
 function FormSignUp() {
   const form = useForm<z.infer<typeof signupSchema>>({
@@ -28,7 +28,7 @@ function FormSignUp() {
     },
   });
 
-  const { execute } = useAction(register, {
+  const { execute } = useAction(registerAction, {
     onSuccess({ data }) {
       if (data && 'error' in data) {
         form.setError('root', { message: data.error });

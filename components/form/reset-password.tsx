@@ -1,5 +1,6 @@
 'use client';
 
+import { changePasswordSchema } from '@/actions/user/reset/schema';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -10,7 +11,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { changePasswordSchema } from '@/types/validate';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
