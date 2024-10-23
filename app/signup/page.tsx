@@ -13,6 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { signupSchema } from '@/types/validate';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -36,7 +37,7 @@ function SignUp() {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center">
-      <section className="mx-auto my-5 w-full max-w-xs rounded-md border bg-muted/20 p-5">
+      <section className="mx-auto my-5 w-full max-w-xs">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
@@ -84,7 +85,16 @@ function SignUp() {
               <p className="text-red-500">{form.formState.errors.root.message}</p>
             )}
 
-            <Button type="submit">Sign Up</Button>
+            <Button className="w-full" size="sm" type="submit">
+              Sign Up
+            </Button>
+
+            <p className="text-sm text-muted-foreground">
+              Already have an account?{' '}
+              <Link className="text-blue-500 hover:text-blue-700" href="/signin">
+                Sign In
+              </Link>
+            </p>
           </form>
         </Form>
       </section>

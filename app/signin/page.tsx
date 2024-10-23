@@ -13,6 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { signinSchema } from '@/types/validate';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -37,7 +38,7 @@ function SignIn() {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center">
-      <section className="mx-auto my-5 w-full max-w-xs rounded-md border bg-muted/20 p-5">
+      <section className="mx-auto my-5 w-full max-w-xs">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
@@ -71,7 +72,16 @@ function SignIn() {
               <p className="text-red-500">{form.formState.errors.root.message}</p>
             )}
 
-            <Button type="submit">Sign in</Button>
+            <Button className="w-full" size="sm" type="submit">
+              Sign in
+            </Button>
+
+            <p className="text-sm text-muted-foreground">
+              No account?{' '}
+              <Link className="text-blue-500 hover:text-blue-700" href="/signup">
+                Sign Up Now
+              </Link>
+            </p>
           </form>
         </Form>
       </section>
