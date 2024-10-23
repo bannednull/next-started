@@ -3,7 +3,7 @@
 import { signIn } from '@/auth';
 import { signinSchema, signupSchema } from '@/types/validate';
 import { z } from 'zod';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 import { prisma } from '@/libs/prisma';
 
 export async function login(data: z.infer<typeof signinSchema>) {
