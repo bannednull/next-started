@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useAction } from 'next-safe-action/hooks';
 
 function SignUp() {
   const form = useForm<z.infer<typeof signupSchema>>({
@@ -27,13 +28,16 @@ function SignUp() {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof signupSchema>) => {
-    const res = await register(data);
-    if ('error' in res) {
-      form.setError('root', { message: res.error });
-      return;
-    }
-  };
+  const { execute } = useAction(register, {
+    onSuccess({ data }) {
+      if (data && 'error' in data) {
+        form.setError('root', { message: data.error });
+        return;
+      }
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof signupSchema>) => execute(data);
 
   return (
     <Form {...form}>

@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { hash } from 'bcryptjs';
 import { prisma } from '@/libs/prisma';
 import { actionClient } from '../safe-action';
+import { Prisma } from '@prisma/client';
 
 export async function login(data: z.infer<typeof signinSchema>) {
   try {
@@ -19,20 +20,31 @@ export async function login(data: z.infer<typeof signinSchema>) {
   }
 }
 
-export async function register(data: z.infer<typeof signupSchema>) {
-  try {
-    const password = await hash(data.password, 10);
-    await prisma.user.create({
-      data: {
-        email: data.username,
-        password,
-      },
-    });
-    return { success: true };
-  } catch {
-    return { error: 'Registration failed' };
-  }
-}
+export const register = actionClient
+  .metadata({ name: 'register' })
+  .schema(signupSchema)
+  .action(async ({ parsedInput: { username, password, repeatPassword } }) => {
+    if (password !== repeatPassword) {
+      return { error: 'Passwords do not match' };
+    }
+
+    const passwordHash = await hash(password, 10);
+
+    try {
+      await prisma.user.create({
+        data: {
+          email: username,
+          password: passwordHash,
+        },
+      });
+      return { success: true };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        return { error: 'This email is already registered' };
+      }
+      return { error: 'An error occurred during registration' };
+    }
+  });
 
 export const forgotPassword = actionClient
   .metadata({ name: 'forgot_password' })
